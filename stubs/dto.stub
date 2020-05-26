@@ -1,0 +1,18 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ rootNamespace }}DTO\DTO as BaseDTO;
+
+class {{ class }} extends BaseDTO
+{
+
+    /**
+    * @return array
+    */
+    public function rules(): array
+    {
+        return [];
+    }
+
+}

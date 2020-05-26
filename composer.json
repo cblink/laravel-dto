@@ -41,9 +41,7 @@
         }
     },
     "scripts": {
-        "post-update-cmd": [
-            "cghooks update"
-        ],
+        "post-update-cmd": "cghooks update",
         "post-merge": "composer install",
         "post-install-cmd": [
             "cghooks add --ignore-lock",
