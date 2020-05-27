@@ -29,6 +29,11 @@
         }
     },
     "extra": {
+        "laravel": {
+            "providers": [
+                "Cblink\\DTO\\ServiceProvider"
+            ]
+        },
         "hooks": {
             "pre-commit": [
                 "composer test",
