@@ -9,9 +9,15 @@
 $ composer require cblink/laravel-dto -vvv
 ```
 
-## Usage
+## 生成DTO
 
-TODO
+```shell script
+
+// 默认将创建到项目app/DTO目录
+php artisan make:dto BaseDTO
+
+```
+
 
 ## Contributing
 
