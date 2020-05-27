@@ -2,10 +2,10 @@
 
 namespace Cblink\DTO;
 
-use App\Console\Commands\DTOMakeCommand;
-use Illuminate\Support\ServiceProvider;
+use Cblink\DTO\Commands\DTOMakeCommand;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
-class ServiceProvider extends ServiceProvider
+class ServiceProvider extends BaseServiceProvider
 {
 
     public function boot()

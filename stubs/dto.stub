@@ -2,9 +2,9 @@
 
 namespace {{ namespace }};
 
-use {{ rootNamespace }}DTO\DTO as BaseDTO;
+use Cblink\DTO\DTO;
 
-class {{ class }} extends BaseDTO
+class {{ class }} extends DTO
 {
 
     /**
