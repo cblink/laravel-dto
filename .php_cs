@@ -2,7 +2,7 @@
 $header = <<<EOF
 This file is part of the cblink/laravel-dto.
 
-(c) Nick <nick@httpd.cc>
+(c) Nick <me@xieying.vip>
 
 This source file is subject to the MIT license that is bundled.
 EOF;
