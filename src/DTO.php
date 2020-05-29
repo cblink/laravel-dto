@@ -95,7 +95,7 @@ abstract class DTO
         $validator = $this->getValidator()->make($origin, $this->rules());
 
         if ($validator->fails()) {
-           throw new DTOException($validator->errors()->first());
+            throw new DTOException($validator->errors()->first());
         }
     }
 
