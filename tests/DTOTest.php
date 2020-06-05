@@ -42,7 +42,6 @@ class DTOTest extends TestCase
 
     public function testGetNull()
     {
-
         $baseDTO = new BaseDTO([
             'test' => 'hellp',
             'user' => ['name' => 'test'],
@@ -59,7 +58,7 @@ class DTOTest extends TestCase
  *
  * @property string  $test
  * @property UserDTO $user
- * @property string $url
+ * @property string  $url
  */
 class BaseDTO extends DTO
 {

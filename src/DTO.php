@@ -15,8 +15,7 @@ use Cblink\DTO\Traits\ValidatorTrait;
 use Illuminate\Support\Str;
 
 /**
- * Class DTO
- * @package Cblink\DTO
+ * Class DTO.
  */
 abstract class DTO
 {
@@ -40,7 +39,6 @@ abstract class DTO
     /**
      * DTO constructor.
      *
-     * @param array $data
      * @throws \Throwable
      */
     public function __construct(array $data = [])
