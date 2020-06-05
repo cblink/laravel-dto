@@ -11,13 +11,17 @@
 namespace Cblink\DTO;
 
 use Cblink\DTO\Exceptions\DTOException;
-use Illuminate\Contracts\Container\Container;
+use Cblink\DTO\Traits\ValidatorTrait;
 use Illuminate\Support\Str;
-use Overtrue\Validation\Factory;
-use Overtrue\Validation\Translator;
 
+/**
+ * Class DTO
+ * @package Cblink\DTO
+ */
 abstract class DTO
 {
+    use ValidatorTrait;
+
     /**
      * @var array
      */
@@ -36,6 +40,7 @@ abstract class DTO
     /**
      * DTO constructor.
      *
+     * @param array $data
      * @throws \Throwable
      */
     public function __construct(array $data = [])
@@ -67,51 +72,6 @@ abstract class DTO
     }
 
     /**
-     * @throws \Throwable
-     */
-    protected function validate()
-    {
-        if (!$this->rules()) {
-            return;
-        }
-
-        foreach (['beforeValidate', 'baseValidate', 'afterValidate'] as $validateMethod) {
-            if (!method_exists($this, $validateMethod)) {
-                continue;
-            }
-
-            call_user_func([$this, $validateMethod], $this->origin);
-        }
-    }
-
-    /**
-     * @param $origin
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     * @throws \Throwable
-     */
-    protected function baseValidate($origin)
-    {
-        $validator = $this->getValidator()->make($origin, $this->rules());
-
-        if ($validator->fails()) {
-            throw new DTOException($validator->errors()->first());
-        }
-    }
-
-    /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Validation\Factory|mixed|Factory
-     */
-    protected function getValidator()
-    {
-        if (function_exists('app') && app() instanceof Container) {
-            return app(\Illuminate\Contracts\Validation\Factory::class);
-        }
-
-        return new Factory(new Translator());
-    }
-
-    /**
      * @return array
      */
     protected function fillable()
@@ -122,7 +82,7 @@ abstract class DTO
     /**
      * @param $name
      *
-     * @return array|\ArrayAccess|mixed
+     * @return array|\ArrayAccess|null
      *
      * @throws \Throwable
      */
@@ -132,9 +92,11 @@ abstract class DTO
             return call_user_func([$this, $method]);
         }
 
-        throw_if(!array_key_exists($name, $this->payload), new DTOException(sprintf('%s attribute is not defined', $name)));
+        if (!array_key_exists($name, $this->payload) && !in_array($name, $this->fillable())) {
+            throw new DTOException(sprintf('%s attribute is not defined', $name));
+        }
 
-        return $this->payload[$name];
+        return $this->payload[$name] ?? null;
     }
 
     /**
