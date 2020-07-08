@@ -18,11 +18,18 @@ use Overtrue\Validation\Translator;
 trait ValidatorTrait
 {
     /**
+     * 是否开启验证
+     *
+     * @var bool
+     */
+    protected $verify = true;
+
+    /**
      * @throws \Throwable
      */
-    protected function validate()
+    public function validate()
     {
-        if (!$this->rules()) {
+        if (!$this->verify || empty($this->rules())) {
             return;
         }
 
@@ -41,7 +48,7 @@ trait ValidatorTrait
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      * @throws \Throwable
      */
-    protected function baseValidate($origin)
+    public function baseValidate($origin)
     {
         $validator = $this->getValidator()->make($origin, $this->rules());
 

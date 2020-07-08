@@ -10,16 +10,18 @@
 
 namespace Cblink\DTO;
 
-use Cblink\DTO\Exceptions\DTOException;
+use Cblink\DTO\Traits\PayloadTrait;
 use Cblink\DTO\Traits\ValidatorTrait;
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 
 /**
  * Class DTO.
  */
-abstract class DTO
+abstract class DTO implements Arrayable
 {
     use ValidatorTrait;
+    use PayloadTrait;
 
     /**
      * @var array
@@ -27,23 +29,24 @@ abstract class DTO
     protected $origin = [];
 
     /**
-     * @var array
-     */
-    protected $payload = [];
-
-    /**
-     * @var array
-     */
-    protected $fillable = [];
-
-    /**
      * DTO constructor.
+     *
+     * @param bool $verify
      *
      * @throws \Throwable
      */
-    public function __construct(array $data = [])
+    public function __construct(array $data = [], $verify = true)
     {
         $this->origin = $data;
+        $this->verify = $verify;
+        $this->bootstrap();
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function bootstrap()
+    {
         $this->validate();
         $this->setPayload();
     }
@@ -51,30 +54,32 @@ abstract class DTO
     abstract public function rules(): array;
 
     /**
-     * @throws \Throwable
+     * @return array
      */
-    protected function setPayload()
+    public function toArray()
     {
-        array_walk($this->origin, function ($val, $key) {
-            // 如果key值不存在，则跳过
-            if (!in_array($key, $this->fillable())) {
-                return;
-            }
-
-            $method = sprintf('set%s', ucfirst(Str::snake($key)));
-
-            // 如果存在set方法，优先使用方法赋值
-            $this->payload[$key] = method_exists($this, $method) ?
-                call_user_func_array([$this, $method], [$val]) : $val;
-        });
+        return $this->payload;
     }
 
     /**
      * @return array
      */
-    protected function fillable()
+    public function getOrigin()
     {
-        return $this->fillable ?: array_keys($this->rules());
+        return $this->origin;
+    }
+
+    /**
+     * 获取参数，不经过.
+     *
+     * @param $key
+     * @param null $default
+     *
+     * @return array|\ArrayAccess|mixed
+     */
+    public function getItem($key, $default = null)
+    {
+        return Arr::get($this->payload, $key, $default);
     }
 
     /**
@@ -86,15 +91,7 @@ abstract class DTO
      */
     public function __get($name)
     {
-        if (method_exists($this, $method = sprintf('get%s', ucfirst($name)))) {
-            return call_user_func([$this, $method]);
-        }
-
-        if (!array_key_exists($name, $this->payload) && !in_array($name, $this->fillable())) {
-            throw new DTOException(sprintf('%s attribute is not defined', $name));
-        }
-
-        return $this->payload[$name] ?? null;
+        return $this->getAttribute($name);
     }
 
     /**
