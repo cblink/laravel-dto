@@ -39,6 +39,18 @@ class DTOTest extends TestCase
 
         $dto = new BaseDTO();
     }
+
+    public function testGetNull()
+    {
+        $baseDTO = new BaseDTO([
+            'test' => 'hellp',
+            'user' => ['name' => 'test'],
+        ]);
+
+        $this->assertNull($baseDTO->url);
+
+        $this->assertIsString($baseDTO->test);
+    }
 }
 
 /**
@@ -46,6 +58,7 @@ class DTOTest extends TestCase
  *
  * @property string  $test
  * @property UserDTO $user
+ * @property string  $url
  */
 class BaseDTO extends DTO
 {
@@ -54,6 +67,7 @@ class BaseDTO extends DTO
         return [
             'test' => ['required'],
             'user' => ['required', 'array'],
+            'url' => ['nullable', 'string'],
         ];
     }
 

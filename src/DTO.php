@@ -10,37 +10,43 @@
 
 namespace Cblink\DTO;
 
-use Cblink\DTO\Exceptions\DTOException;
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Support\Str;
-use Overtrue\Validation\Factory;
-use Overtrue\Validation\Translator;
+use Cblink\DTO\Traits\PayloadTrait;
+use Cblink\DTO\Traits\ValidatorTrait;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Arr;
 
-abstract class DTO
+/**
+ * Class DTO.
+ */
+abstract class DTO implements Arrayable
 {
+    use ValidatorTrait;
+    use PayloadTrait;
+
     /**
      * @var array
      */
     protected $origin = [];
 
     /**
-     * @var array
-     */
-    protected $payload = [];
-
-    /**
-     * @var array
-     */
-    protected $fillable = [];
-
-    /**
      * DTO constructor.
+     *
+     * @param bool $verify
      *
      * @throws \Throwable
      */
-    public function __construct(array $data = [])
+    public function __construct(array $data = [], $verify = true)
     {
         $this->origin = $data;
+        $this->verify = $verify;
+        $this->bootstrap();
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function bootstrap()
+    {
         $this->validate();
         $this->setPayload();
     }
@@ -48,93 +54,44 @@ abstract class DTO
     abstract public function rules(): array;
 
     /**
-     * @throws \Throwable
+     * @return array
      */
-    protected function setPayload()
+    public function toArray()
     {
-        array_walk($this->origin, function ($val, $key) {
-            // 如果key值不存在，则跳过
-            if (!in_array($key, $this->fillable())) {
-                return;
-            }
-
-            $method = sprintf('set%s', ucfirst(Str::snake($key)));
-
-            // 如果存在set方法，优先使用方法赋值
-            $this->payload[$key] = method_exists($this, $method) ?
-                call_user_func_array([$this, $method], [$val]) : $val;
-        });
-    }
-
-    /**
-     * @throws \Throwable
-     */
-    protected function validate()
-    {
-        if (!$this->rules()) {
-            return;
-        }
-
-        foreach (['beforeValidate', 'baseValidate', 'afterValidate'] as $validateMethod) {
-            if (!method_exists($this, $validateMethod)) {
-                continue;
-            }
-
-            call_user_func([$this, $validateMethod], $this->origin);
-        }
-    }
-
-    /**
-     * @param $origin
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     * @throws \Throwable
-     */
-    protected function baseValidate($origin)
-    {
-        $validator = $this->getValidator()->make($origin, $this->rules());
-
-        if ($validator->fails()) {
-            throw new DTOException($validator->errors()->first());
-        }
-    }
-
-    /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Validation\Factory|mixed|Factory
-     */
-    protected function getValidator()
-    {
-        if (function_exists('app') && app() instanceof Container) {
-            return app(\Illuminate\Contracts\Validation\Factory::class);
-        }
-
-        return new Factory(new Translator());
+        return $this->payload;
     }
 
     /**
      * @return array
      */
-    protected function fillable()
+    public function getOrigin()
     {
-        return $this->fillable ?: array_keys($this->rules());
+        return $this->origin;
+    }
+
+    /**
+     * 获取参数，不经过.
+     *
+     * @param $key
+     * @param null $default
+     *
+     * @return array|\ArrayAccess|mixed
+     */
+    public function getItem($key, $default = null)
+    {
+        return Arr::get($this->payload, $key, $default);
     }
 
     /**
      * @param $name
      *
-     * @return array|\ArrayAccess|mixed
+     * @return array|\ArrayAccess|null
      *
      * @throws \Throwable
      */
     public function __get($name)
     {
-        if (method_exists($this, $method = sprintf('get%s', ucfirst($name)))) {
-            return call_user_func([$this, $method]);
-        }
-
-        throw_if(!array_key_exists($name, $this->payload), new DTOException(sprintf('%s attribute is not defined', $name)));
-
-        return $this->payload[$name];
+        return $this->getAttribute($name);
     }
 
     /**
