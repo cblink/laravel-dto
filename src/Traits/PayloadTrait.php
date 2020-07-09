@@ -51,21 +51,21 @@ trait PayloadTrait
      */
     protected function setPayload()
     {
-        // 如果包含*号则直接赋值
+        // 如果包含 * 号则直接赋值
         if (in_array('*', $this->fillable())) {
             $this->payload = $this->origin;
 
             return;
         }
 
-        array_walk($this->origin, function ($val, $key) {
+        foreach ($this->origin as $key => $val) {
             // 如果key值不存在，则跳过
             if (!in_array($key, $this->fillable())) {
                 return;
             }
 
             $this->setAttribute($key, $val);
-        });
+        }
     }
 
     /**
@@ -75,7 +75,7 @@ trait PayloadTrait
      */
     protected function getAttribute($name)
     {
-        $method = 'get'.ucfirst(Str::snake($name));
+        $method = 'get'.ucfirst(Str::snake($name)).'Attribute';
 
         if (method_exists($this, $method)) {
             return call_user_func([$this, $method]);
@@ -94,7 +94,7 @@ trait PayloadTrait
      */
     protected function setAttribute($name, $val)
     {
-        $method = 'set'.ucfirst(Str::snake($name));
+        $method = 'set'.ucfirst(Str::snake($name)).'Attribute';
 
         if (method_exists($this, $method)) {
             $this->payload[$name] = call_user_func_array([$this, $method], [$val]);
