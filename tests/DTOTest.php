@@ -51,6 +51,16 @@ class DTOTest extends TestCase
 
         $this->assertIsString($baseDTO->test);
     }
+
+    public function testGetAll()
+    {
+        $baseDTO = new BaseDTO([
+            'test' => 'hellp',
+            'user' => ['name' => 'test'],
+        ]);
+
+        $this->assertIsArray($baseDTO->toArray());
+    }
 }
 
 /**
@@ -71,7 +81,7 @@ class BaseDTO extends DTO
         ];
     }
 
-    public function setUser($user)
+    public function setUserAttribute($user)
     {
         return new UserDTO($user);
     }
