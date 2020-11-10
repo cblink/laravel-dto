@@ -79,7 +79,7 @@ abstract class DTO implements Arrayable
      */
     public function getItem($key, $default = null)
     {
-        return Arr::get($this->payload, $key, $default);
+        return Arr::get($this->payload ?: $this->origin, $key, $default);
     }
 
     /**
