@@ -61,7 +61,7 @@ trait PayloadTrait
         foreach ($this->origin as $key => $val) {
             // 如果key值不存在，则跳过
             if (!in_array($key, $this->fillable())) {
-                return;
+                continue;
             }
 
             $this->setAttribute($key, $val);
