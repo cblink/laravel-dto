@@ -31,23 +31,24 @@ abstract class DTO implements Arrayable
     /**
      * DTO constructor.
      *
+     * @param array $data
      * @param bool $verify
      *
      * @throws \Throwable
      */
     public function __construct(array $data = [], $verify = true)
     {
-        $this->origin = $data;
-        $this->verify = $verify;
-        $this->bootstrap();
+        $this->setOriginData($data);
+        $this->bootstrap($verify);
     }
 
     /**
+     * @param $verify
      * @throws \Throwable
      */
-    public function bootstrap()
+    public function bootstrap($verify)
     {
-        $this->validate();
+        $this->validate($verify);
         $this->setPayload();
     }
 
@@ -67,6 +68,19 @@ abstract class DTO implements Arrayable
     public function getOrigin()
     {
         return $this->origin;
+    }
+
+    /**
+     * @param array $data
+     * @return void
+     */
+    public function setOriginData(array $data = [])
+    {
+        if (!$data && function_exists('request')) {
+            $data = request()->all();
+        }
+
+        $this->origin = $data;
     }
 
     /**
