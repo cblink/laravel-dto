@@ -31,7 +31,6 @@ abstract class DTO implements Arrayable
     /**
      * DTO constructor.
      *
-     * @param array $data
      * @param bool $verify
      *
      * @throws \Throwable
@@ -44,6 +43,7 @@ abstract class DTO implements Arrayable
 
     /**
      * @param $verify
+     *
      * @throws \Throwable
      */
     public function bootstrap($verify)
@@ -71,7 +71,6 @@ abstract class DTO implements Arrayable
     }
 
     /**
-     * @param array $data
      * @return void
      */
     public function setOriginData(array $data = [])

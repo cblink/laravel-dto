@@ -75,7 +75,7 @@ trait PayloadTrait
      */
     protected function getAttribute($name)
     {
-        $method = 'get'.ucfirst(Str::snake($name)).'Attribute';
+        $method = 'get'.ucfirst(Str::camel($name)).'Attribute';
 
         if (method_exists($this, $method)) {
             return call_user_func([$this, $method]);
