@@ -94,7 +94,7 @@ trait PayloadTrait
      */
     protected function setAttribute($name, $val)
     {
-        $method = 'set'.ucfirst(Str::snake($name)).'Attribute';
+        $method = 'set'.ucfirst(Str::camel($name)).'Attribute';
 
         if (method_exists($this, $method)) {
             $this->payload[$name] = call_user_func_array([$this, $method], [$val]);
