@@ -30,10 +30,7 @@ trait PayloadTrait
      */
     protected $attributes = [];
 
-    /**
-     * @return array
-     */
-    protected function fillable()
+    protected function fillable(): array
     {
         if (!$this->attributes) {
             $rules = method_exists($this, 'rules') ?
@@ -46,19 +43,18 @@ trait PayloadTrait
         return $this->attributes;
     }
 
-    /**
-     * @throws \Throwable
-     */
-    protected function setPayload()
+    protected function setPayload(array $payload = [])
     {
+        $payload = $payload ?: $this->origin;
+
         // 如果包含 * 号则直接赋值
         if (in_array('*', $this->fillable())) {
-            $this->payload = $this->origin;
+            $this->payload = $payload;
 
             return;
         }
 
-        foreach ($this->origin as $key => $val) {
+        foreach ($payload as $key => $val) {
             // 如果key值不存在，则跳过
             if (!in_array($key, $this->fillable())) {
                 continue;

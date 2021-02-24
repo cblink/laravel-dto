@@ -54,18 +54,12 @@ abstract class DTO implements Arrayable
 
     abstract public function rules(): array;
 
-    /**
-     * @return array
-     */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->payload;
     }
 
-    /**
-     * @return array
-     */
-    public function getOrigin()
+    public function getOrigin(): array
     {
         return $this->origin;
     }
