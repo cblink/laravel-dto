@@ -11,10 +11,9 @@
 namespace Cblink\Dto;
 
 use ArrayAccess;
-use Serializable;
-use Illuminate\Support\Arr;
 use Illuminate\Contracts\Support\Arrayable;
-
+use Illuminate\Support\Arr;
+use Serializable;
 
 /**
  * Class DTO.
@@ -40,8 +39,6 @@ class Dto implements Arrayable, Serializable, ArrayAccess
 
     /**
      * DTO constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data = [])
     {
@@ -49,7 +46,6 @@ class Dto implements Arrayable, Serializable, ArrayAccess
     }
 
     /**
-     * @param array $data
      * @return $this
      */
     protected function setOriginData(array $data = []): DTO
@@ -60,7 +56,6 @@ class Dto implements Arrayable, Serializable, ArrayAccess
     }
 
     /**
-     * @param array $payload
      * @return $this
      */
     protected function setPayload(array $payload = []): DTO

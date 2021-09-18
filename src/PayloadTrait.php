@@ -1,28 +1,27 @@
 <?php
 
+/*
+ * This file is part of the cblink/laravel-dto.
+ *
+ * (c) Nick <me@xieying.vip>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Cblink\Dto;
 
 trait PayloadTrait
 {
-    /**
-     * @return array
-     */
     public function toArray(): array
     {
         return $this->payload;
     }
 
-    /**
-     * @return array
-     */
     public function getOrigin(): array
     {
         return $this->origin;
     }
 
-    /**
-     * @return string
-     */
     public function serialize(): string
     {
         return serialize(['payload' => $this->payload, 'origin' => $this->origin]);
@@ -40,7 +39,6 @@ trait PayloadTrait
 
     /**
      * @param $offset
-     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -49,6 +47,7 @@ trait PayloadTrait
 
     /**
      * @param $offset
+     *
      * @return mixed
      */
     public function offsetGet($offset)

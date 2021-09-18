@@ -56,9 +56,9 @@ class DtoTest extends TestCase
 /**
  * Class BaseDTO.
  *
- * @property string  $test
- * @property array $user
- * @property string  $url
+ * @property string $test
+ * @property array  $user
+ * @property string $url
  */
 class BaseDTO extends DTO
 {
