@@ -10,10 +10,9 @@
 
 namespace Tests;
 
-use Cblink\DTO\DTO;
-use Cblink\DTO\Exceptions\DTOException;
+use Cblink\Dto\Dto;
 
-class DTOTest extends TestCase
+class DtoTest extends TestCase
 {
     public function testBaseDTO()
     {
@@ -24,20 +23,11 @@ class DTOTest extends TestCase
             'user' => ['name' => 'test'],
         ]);
 
-        $this->assertInstanceOf(DTO::class, $baseDTO);
-
-        $this->assertInstanceOf(UserDTO::class, $baseDTO->user);
+        $this->assertInstanceOf(Dto::class, $baseDTO);
 
         $this->assertSame($baseDTO->test, $test);
 
         $this->assertFalse(empty($baseDTO->test));
-    }
-
-    public function testBaseDTOException()
-    {
-        $this->expectException(DTOException::class);
-
-        $dto = new BaseDTO();
     }
 
     public function testGetNull()
@@ -67,37 +57,20 @@ class DTOTest extends TestCase
  * Class BaseDTO.
  *
  * @property string  $test
- * @property UserDTO $user
+ * @property array $user
  * @property string  $url
  */
 class BaseDTO extends DTO
 {
-    public function rules(): array
-    {
-        return [
-            'test' => ['required'],
-            'user' => ['required', 'array'],
-            'url' => ['nullable', 'string'],
-        ];
-    }
-
-    public function setUserAttribute($user)
-    {
-        return new UserDTO($user);
-    }
+    protected $fillable = ['test', 'user', 'url'];
 }
 
 /**
  * Class UserDTO.
  *
- * @property int $user_d
+ * @property string $name
  */
 class UserDTO extends DTO
 {
-    public function rules(): array
-    {
-        return [
-            'name' => ['required'],
-        ];
-    }
+    protected $fillable = ['name'];
 }

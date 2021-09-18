@@ -8,14 +8,14 @@
  * This source file is subject to the MIT license that is bundled.
  */
 
-namespace Cblink\DTO\Contracts;
+namespace Cblink\Dto\Contracts;
 
-use Cblink\DTO\DTO;
+use Cblink\Dto\Dto;
 
 /**
  * Interface ToDTOConTract.
  */
-interface ToDTOContract
+interface ToDtoContract
 {
-    public function toDTO(): DTO;
+    public function toDto(): Dto;
 }

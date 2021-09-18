@@ -9,19 +9,16 @@
         }
     ],
     "require": {
-        "php": ">=7.2",
-        "overtrue/validation": "^2.0",
-        "illuminate/support": "^5.2|^6.0|^7.0|^8.0"
+        "php": "^7.2|^8.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~8.0",
         "mockery/mockery": "^1.2",
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "brainmaestro/composer-git-hooks": "^2.7"
+        "friendsofphp/php-cs-fixer": "^2.16"
     },
     "autoload": {
         "psr-4": {
-            "Cblink\\DTO\\": "src/"
+            "Cblink\\Dto\\": "src/"
         }
     },
     "autoload-dev": {
@@ -29,38 +26,12 @@
             "Tests\\": "tests/"
         }
     },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Cblink\\DTO\\ServiceProvider"
-            ]
-        },
-        "hooks": {
-            "pre-commit": [
-                "composer test",
-                "composer fix-style"
-            ],
-            "pre-push": [
-                "composer test",
-                "composer check-style"
-            ]
-        }
-    },
     "scripts": {
-        "post-update-cmd": "cghooks update",
-        "post-merge": "composer install",
-        "post-install-cmd": [
-            "cghooks add --ignore-lock",
-            "cghooks update"
-        ],
-        "cghooks": "./vendor/bin/cghooks",
-        "check-style": "./vendor/bin/php-cs-fixer fix --using-cache=no --diff --config=.php_cs --dry-run --ansi",
         "fix-style": "./vendor/bin/php-cs-fixer fix --using-cache=no --config=.php_cs --ansi",
         "test": "./vendor/bin/phpunit --colors=always"
     },
     "scripts-descriptions": {
         "test": "Run all tests.",
-        "check-style": "Run style checks (only dry run - no fixing!).",
         "fix-style": "Run style checks and fix violations."
     }
 }
