@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": "^7.2|^8.0",
-        "illuminate/support": "5.0|6.0||^7.0|^8.0"
+        "hyperf/utils": "~2.2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~8.0",
