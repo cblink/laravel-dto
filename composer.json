@@ -6,6 +6,11 @@
         {
             "name": "Nick",
             "email": "me@xieying.vip"
+        },
+        {
+            "name": "mouyong",
+            "email": "my24251325@gmail.com",
+            "homepage": "https://github.com/mouyong"
         }
     ],
     "require": {

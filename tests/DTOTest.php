@@ -11,9 +11,9 @@
 namespace Tests;
 
 use Cblink\DTO\DTO;
+use Cblink\DTO\Exceptions\DTOException;
 use Cblink\DTO\ServiceProvider;
 use Illuminate\Filesystem\Filesystem;
-use Cblink\DTO\Exceptions\DTOException;
 
 class DTOTest extends TestCase
 {
@@ -50,6 +50,7 @@ class DTOTest extends TestCase
 
         $this->assertFileNotExists($filepath);
     }
+
     public function testBaseDTO()
     {
         $test = 'hello dto';
