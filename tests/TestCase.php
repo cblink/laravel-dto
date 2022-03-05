@@ -10,6 +10,8 @@
 
 namespace Tests;
 
-class TestCase extends \PHPUnit\Framework\TestCase
+use Orchestra\Testbench\TestCase as Orchestra;
+
+class TestCase extends Orchestra
 {
 }

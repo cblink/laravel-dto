@@ -11,10 +11,45 @@
 namespace Tests;
 
 use Cblink\DTO\DTO;
+use Cblink\DTO\ServiceProvider;
+use Illuminate\Filesystem\Filesystem;
 use Cblink\DTO\Exceptions\DTOException;
 
 class DTOTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app->register(ServiceProvider::class);
+    }
+
+    public function testCreateNewDTOFile()
+    {
+        $this->artisan('make:dto', [
+            'name' => 'TestDTO',
+        ]);
+
+        $this->assertFileExists($filepath = app_path('DTO/TestDTO.php'));
+
+        $this->app->make(Filesystem::class)->deleteDirectory(app_path('DTO'), true);
+
+        $this->assertFileNotExists($filepath);
+    }
+
+    public function testCreateNewDTOFileWithPath()
+    {
+        $this->artisan('make:dto', [
+            'name' => 'TestDTO',
+            '--path' => 'Domain/DTO',
+        ]);
+
+        $this->assertFileExists($filepath = base_path('Domain/DTO/TestDTO.php'));
+
+        $this->app->make(Filesystem::class)->deleteDirectory(base_path('Domain'), true);
+
+        $this->assertFileNotExists($filepath);
+    }
     public function testBaseDTO()
     {
         $test = 'hello dto';
