@@ -37,36 +37,48 @@ abstract class DTO implements Arrayable
      */
     public function __construct(array $data = [], $verify = true)
     {
-        $this->origin = $data;
-        $this->verify = $verify;
-        $this->bootstrap();
+        $this->setOriginData($data);
+        $this->bootstrap($verify);
+    }
+
+    public static function make(array $data = [], $verify = true)
+    {
+        return new static($data, $verify);
     }
 
     /**
+     * @param $verify
+     *
      * @throws \Throwable
      */
-    public function bootstrap()
+    public function bootstrap($verify)
     {
-        $this->validate();
+        $this->validate($verify);
         $this->setPayload();
     }
 
     abstract public function rules(): array;
 
-    /**
-     * @return array
-     */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->payload;
     }
 
-    /**
-     * @return array
-     */
-    public function getOrigin()
+    public function getOrigin(): array
     {
         return $this->origin;
+    }
+
+    /**
+     * @return void
+     */
+    public function setOriginData(array $data = [])
+    {
+        if (!$data && function_exists('request')) {
+            $data = request()->all();
+        }
+
+        $this->origin = $data;
     }
 
     /**
@@ -79,7 +91,7 @@ abstract class DTO implements Arrayable
      */
     public function getItem($key, $default = null)
     {
-        return Arr::get($this->payload, $key, $default);
+        return Arr::get($this->payload ?: $this->origin, $key, $default);
     }
 
     /**

@@ -13,8 +13,11 @@ $ composer require cblink/laravel-dto -vvv
 
 ```shell script
 
-// 默认将创建到项目app/DTO目录
+// 默认将创建到项目 /app/DTO 目录
 php artisan make:dto BaseDTO
+
+// 创建到指定目录 /Domain/DTO 目录
+php artisan make:dto TestDTO --path Domain/DTO
 
 ```
 

@@ -11,6 +11,7 @@
 namespace Cblink\DTO\Commands;
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 
 class DTOMakeCommand extends GeneratorCommand
 {
@@ -19,7 +20,8 @@ class DTOMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:dto {name}';
+    protected $signature = 'make:dto {name : The name of the DTO}
+        {--path= : The location where the migration file should be created}';
 
     /**
      * The console command description.
@@ -39,6 +41,28 @@ class DTOMakeCommand extends GeneratorCommand
 
     protected function getDefaultNamespace($rootNamespace)
     {
+        if ($this->option('path')) {
+            return $rootNamespace;
+        }
+
         return $rootNamespace.'\DTO';
+    }
+
+    protected function getPath($name)
+    {
+        if ($path = $this->option('path')) {
+            $name = Str::replaceFirst($this->rootNamespace(), '', $name);
+            $filename = str_replace('\\', '/', $name);
+
+            $path = trim($path, '/');
+
+            return sprintf('%s/%s/%s.php',
+                $this->laravel['path.base'],
+                $path,
+                $filename
+            );
+        }
+
+        return parent::getPath($name);
     }
 }

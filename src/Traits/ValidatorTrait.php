@@ -25,11 +25,11 @@ trait ValidatorTrait
     protected $verify = true;
 
     /**
-     * @throws \Throwable
+     * @param $verify
      */
-    public function validate()
+    public function validate($verify)
     {
-        if (!$this->verify || empty($this->rules())) {
+        if (!$verify || empty($this->rules())) {
             return;
         }
 
