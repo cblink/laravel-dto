@@ -41,6 +41,11 @@ abstract class DTO implements Arrayable
         $this->bootstrap($verify);
     }
 
+    public static function make(array $data = [], $verify = true)
+    {
+        return new static($data, $verify);
+    }
+
     /**
      * @param $verify
      *
