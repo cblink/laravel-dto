@@ -6,7 +6,6 @@ use Cblink\DTO\DTO;
 
 class {{ class }} extends DTO
 {
-
     /**
     * @return array
     */
@@ -14,5 +13,4 @@ class {{ class }} extends DTO
     {
         return [];
     }
-
 }
