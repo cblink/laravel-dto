@@ -6,7 +6,8 @@
 ## Installing
 
 ```shell
-$ composer require cblink/laravel-dto -vvv
+# 1.x与2.x完全不兼容，2.x版本还在测试中，请勿使用
+$ composer require cblink/laravel-dto ^1.0 -vvv
 ```
 
 ## 生成DTO
