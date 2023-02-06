@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": "^7.2|^8.0",
-        "hyperf/utils": "~2.2.0"
+        "overnic/support": "^1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~8.0",

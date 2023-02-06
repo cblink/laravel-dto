@@ -11,8 +11,8 @@
 namespace Cblink\Dto;
 
 use ArrayAccess;
-use Hyperf\Utils\Arr;
-use Hyperf\Utils\Contracts\Arrayable;
+use OverNick\Support\Arr;
+use OverNick\Support\Contracts\Arrayable;
 use Serializable;
 
 /**
