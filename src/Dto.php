@@ -18,7 +18,7 @@ use Serializable;
 /**
  * Class DTO.
  */
-class Dto implements Arrayable, Serializable, ArrayAccess
+class Dto implements Arrayable, ArrayAccess
 {
     use PayloadTrait;
 
