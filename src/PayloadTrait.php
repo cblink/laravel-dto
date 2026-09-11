@@ -24,21 +24,32 @@ trait PayloadTrait
 
     public function serialize(): string
     {
-        return serialize(['payload' => $this->payload, 'origin' => $this->origin]);
+        return serialize($this->__serialize());
     }
 
     /**
-     * @param $data
+     * @param array|string $data
      */
-    public function unserialize($data)
+    public function unserialize(array|string $data): void
     {
-        $data = unserialize($data);
+        $data = is_array($data) ? $data : unserialize($data);
         $this->payload = $data['payload'];
         $this->origin = $data['origin'];
     }
 
+    public function __unserialize(array $data): void
+    {
+        $this->unserialize($data);
+    }
+
+    public function __serialize(): array
+    {
+        return ['payload' => $this->payload, 'origin' => $this->origin];
+    }
+
     /**
      * @param $offset
+     * @return bool
      */
     public function offsetExists($offset): bool
     {
@@ -50,7 +61,7 @@ trait PayloadTrait
      *
      * @return mixed
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         if (in_array($offset, $this->fillable()) && in_array('*', $this->fillable())) {
             throw new \InvalidArgumentException(sprintf('%s attributes is not defined', $offset));
@@ -63,7 +74,7 @@ trait PayloadTrait
         return $this->payload[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value) : void
     {
         // TODO: Implement offsetSet() method.
     }
@@ -71,7 +82,7 @@ trait PayloadTrait
     /**
      * @param $offset
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset) : void
     {
         unset($this->payload[$offset]);
     }

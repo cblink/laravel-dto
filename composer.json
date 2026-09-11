@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": "^7.2|^8.0",
+        "php": "^8.0",
         "overnic/support": "^1.2"
     },
     "require-dev": {
